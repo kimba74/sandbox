@@ -5,7 +5,6 @@ import java.util.Objects;
 /**
  * Missing documentation
  *
- * @author <a href="mailto:steffen.krause@l-3com.com">Steffen Krause</a>
  * @since 1.0
  */
 @FunctionalInterface
