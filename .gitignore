@@ -1,6 +1,12 @@
+# ignore temporary files
+*~
+
 # ignore Maven generated target folders
-~
-target
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.next
+release.properties
 
 # ignore eclipse files
 .project
