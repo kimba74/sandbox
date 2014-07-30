@@ -1,8 +1,5 @@
 # The Sandbox #
 
-    ```
-    java Main
-    
 
     ```java
     public class Main {
