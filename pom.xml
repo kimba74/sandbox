@@ -29,11 +29,16 @@
    <dependencies>
    </dependencies>
 
+    <!-- ====================================================================== -->
+    <!-- = B U I L D   L I F E - C Y C L E   S E T T I N G S                  = -->
+    <!-- ====================================================================== -->
     <build>
+        <!-- P L U G I N S -->
         <plugins>
+            <!-- Maven Compiler Plugin -->
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
