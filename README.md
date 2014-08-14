@@ -1,11 +1,4 @@
 # The Sandbox #
 
+[Sandbox Page](http://kimba74.github.io/sandbox)
 
-```java
-public class Main {
-    
-   public static void main(String... args) {
-      System.out.println("Hello World!");
-   }
-    
-}
