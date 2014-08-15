@@ -1,4 +1,4 @@
-package com.soabridge.reference.sandbox.lambda;
+package org.soabridge.reference.java8.lambda;
 
 import java.util.Objects;
 
