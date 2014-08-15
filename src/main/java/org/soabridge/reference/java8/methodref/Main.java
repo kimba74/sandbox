@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
 
         // Method Reference 1:
-        // Reference to a constructor ClannName::new
+        // Reference to a constructor ClassName::new
         Person speaker = Person.create(Person::new);
         Person p1 = Person.create(Person::new);
         Person p2 = Person.create(Person::new);
