@@ -6,7 +6,6 @@ package org.soabridge.reference.general.threads;
  */
 public class WorkerInterrupted implements Runnable {
 
-    private String name = Thread.currentThread().getName();
     private String message;
 
     public WorkerInterrupted(String message) {
