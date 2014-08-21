@@ -7,26 +7,42 @@ package org.soabridge.reference.general.threads;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
-        Worker worker = new Worker();
-        Thread t1 = new Thread(worker);
+        WorkerWaiting workerWaiting = new WorkerWaiting();
+        Thread t1 = new Thread(workerWaiting, "Waiter");
         t1.start();
 
         Thread.sleep(1000);
 
         System.out.println("*** Main Thread setting first message ***");
-        worker.print("Hello World!");
+        workerWaiting.print("Hello World!");
 
         Thread.sleep(1000);
 
         // Main Thread should get stopped at method print() invocation until Worker Thread is done
         System.out.println("*** Main Thread setting second message ***");
-        worker.print("Goodbye World!");
+        workerWaiting.print("Goodbye World!");
 
         Thread.sleep(1000);
 
         // Main Thread should get stopped at method terminate() invocation until Worker Thread is done
         System.out.println("*** Main Thread terminating Worker Thread ***");
-        worker.terminate();
+        workerWaiting.terminate();
+
+        System.out.println("---------------------------------------------");
+
+        WorkerInterrupted workerInterrupted = new WorkerInterrupted("Hello World");
+        Thread t2 = new Thread(workerInterrupted, "Interrupter");
+        t2.start();
+        System.out.println("*** Main Thread waiting ***");
+        t2.join(10000);
+        if (t2.isAlive()) {
+            System.out.println("*** Main Thread waited long enough ***");
+            t2.interrupt();
+        }
+        else {
+            System.out.println("*** Main Thread joined with utility thread ***");
+        }
+
     }
 
 }

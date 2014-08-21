@@ -4,7 +4,7 @@ package org.soabridge.reference.general.threads;
  * @author <a href="steffen.krause@soabridge.com">Steffen Krause</a>
  * @since 1.0
  */
-public class Worker implements Runnable {
+public class WorkerWaiting implements Runnable {
 
     private boolean run;
     private String message;
@@ -16,13 +16,13 @@ public class Worker implements Runnable {
             while (run) {
                 synchronized (this) {
                     while(message == null && run) {
-                        System.out.println("--- Thread waiting for message ---");
+                        threadMessage("Thread waiting for message");
                         this.wait();
                     }
                     if (run) {
-                        System.out.println("--- Thread printing message ---");
+                        threadMessage("Thread printing message");
                         for (int i = 0; i < 15; i++) {
-                            System.out.println(i+1 + ". " + message);
+                            threadMessage((i+1) + ". " + message);
                             Thread.sleep(1000);
                         }
                         message = null;
@@ -31,13 +31,13 @@ public class Worker implements Runnable {
             }
         }
         catch (InterruptedException e) {
-            System.out.println("--- Thread was interrupted ---");
+            threadMessage("Thread was interrupted");
         }
     }
 
     public void print(String message) {
         synchronized (this) {
-            System.out.println("--- Thread received message \"" + message + "\" ---");
+            threadMessage("Thread received message \"" + message + "\"");
             this.message = message;
             this.notify();
         }
@@ -45,9 +45,14 @@ public class Worker implements Runnable {
 
     public void terminate() {
         synchronized (this) {
-            System.out.println("--- Thread will be terminated ---");
+            threadMessage("Thread will be terminated");
             this.run = false;
             this.notify();
         }
+    }
+
+    private void threadMessage(String message) {
+        String name = Thread.currentThread().getName();
+        System.out.printf("[%s]: %s%n", name, message);
     }
 }
