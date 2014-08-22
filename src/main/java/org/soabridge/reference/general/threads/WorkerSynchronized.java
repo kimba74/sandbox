@@ -8,9 +8,9 @@ import java.util.Random;
  */
 public class WorkerSynchronized implements LoggingRunnable {
 
-    private SharedCounter counter;
+    private SharedSynchronized counter;
 
-    public WorkerSynchronized(SharedCounter counter) {
+    public WorkerSynchronized(SharedSynchronized counter) {
         this.counter = counter;
     }
 

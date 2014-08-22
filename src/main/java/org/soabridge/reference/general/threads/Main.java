@@ -45,7 +45,7 @@ public class Main {
 
         System.out.println("---------------------------------------------");
 
-        SharedCounter counter = new SharedCounter();
+        SharedSynchronized counter = new SharedSynchronized();
         Thread t3 = new Thread(new WorkerSynchronized(counter), "Worker1");
         Thread t4 = new Thread(new WorkerSynchronized(counter), "Worker2");
 
