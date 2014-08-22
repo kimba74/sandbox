@@ -66,6 +66,15 @@ public class Main {
             System.out.printf("--- Interrupting Thread %s ---%n", t4.getName());
             t4.interrupt();
         }
+
+        System.out.println("---------------------------------------------");
+
+        SharedGuarded drop = new SharedGuarded();
+        Thread t5 = new Thread(new WorkerGuarded(WorkerGuarded.Type.CONSUMER, drop), "Worker1");
+        Thread t6 = new Thread(new WorkerGuarded(WorkerGuarded.Type.PRODUCER, drop), "Worker2");
+
+        t5.start();
+        t6.start();
     }
 
 }
