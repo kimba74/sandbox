@@ -43,6 +43,29 @@ public class Main {
             System.out.println("*** Main Thread joined with utility thread ***");
         }
 
+        System.out.println("---------------------------------------------");
+
+        SharedCounter counter = new SharedCounter();
+        Thread t3 = new Thread(new WorkerSynchronized(counter), "Worker1");
+        Thread t4 = new Thread(new WorkerSynchronized(counter), "Worker2");
+
+        t3.start();
+        t4.start();
+
+        try {
+            Thread.sleep(30000);
+        }
+        catch (InterruptedException e) { }
+
+        if(t3.isAlive()) {
+            System.out.printf("--- Interrupting Thread %s ---%n", t3.getName());
+            t3.interrupt();
+        }
+
+        if(t4.isAlive()) {
+            System.out.printf("--- Interrupting Thread %s ---%n", t4.getName());
+            t4.interrupt();
+        }
     }
 
 }
