@@ -4,7 +4,7 @@ package org.soabridge.reference.general.threads;
  * @author <a href="steffen.krause@soabridge.com">Steffen Krause</a>
  * @since 1.0
  */
-public class WorkerInterrupted implements Runnable {
+public class WorkerInterrupted implements LoggingRunnable {
 
     private String message;
 
@@ -26,8 +26,4 @@ public class WorkerInterrupted implements Runnable {
         }
     }
 
-    private void threadMessage(String message) {
-        String name = Thread.currentThread().getName();
-        System.out.printf("[%s]: %s%n", name, message);
-    }
 }
