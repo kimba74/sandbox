@@ -13,7 +13,7 @@ public class SharedSynchronized {
 
     public synchronized void decrease() throws InterruptedException {
         counter--;
-        int wait = rand.nextInt(5000);
+        int wait = rand.nextInt(3000);
         threadMessage("Decreasing value to " + counter + " now waiting for " + wait + "ms");
         // InterruptedException needs to be re-thrown so Runnable can determine if thread was interrupted.
         // Once sleep() throws Interrupted Exception, "interrupted" flag of thread is cleared and Runnable
@@ -23,7 +23,7 @@ public class SharedSynchronized {
 
     public synchronized void increase() throws InterruptedException {
         counter++;
-        int wait = rand.nextInt(5000);
+        int wait = rand.nextInt(3000);
         threadMessage("Increasing value to " + counter+ " now waiting for " + wait + "ms");
         // InterruptedException needs to be re-thrown so Runnable can determine if thread was interrupted.
         // Once sleep() throws Interrupted Exception, "interrupted" flag of thread is cleared and Runnable

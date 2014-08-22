@@ -13,25 +13,25 @@ public class SharedGuarded {
 
     public synchronized void deposit(String message) throws InterruptedException {
         deposit_cntr++;
-        threadMessage("Thread entered " + deposit_cntr + ". deposit procedure [" + message + "]");
+        threadMessage(deposit_cntr + ". Thread entered deposit procedure [" + message + "]");
         while (!empty) {
             wait();
         }
         this.message = message;
         this.empty = false;
         notifyAll();
-        threadMessage("Thread commenced " + deposit_cntr + ". deposit procedure");
+        threadMessage(deposit_cntr + ". Thread commenced deposit procedure");
     }
 
     public synchronized String pickup() throws InterruptedException {
         pickup_cntr++;
-        threadMessage("Thread entered " + pickup_cntr + ". pickup procedure");
+        threadMessage(pickup_cntr + ". Thread entered pickup procedure");
         while (empty) {
             wait();
         }
         empty = true;
         notifyAll();
-        threadMessage("Thread commenced " + pickup_cntr + ". pickup procedure [" + message + "]");
+        threadMessage(pickup_cntr + ". Thread commenced pickup procedure [" + message + "]");
         return message;
     }
 

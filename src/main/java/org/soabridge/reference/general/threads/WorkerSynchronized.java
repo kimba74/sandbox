@@ -17,17 +17,17 @@ public class WorkerSynchronized implements LoggingRunnable {
     @Override
     public void run() {
         Random rand = new Random(System.currentTimeMillis());
-        while (!Thread.currentThread().isInterrupted()) {
+        for (int i=1; i<=10; i++) {
             try {
                 if (rand.nextInt(100) % 2 > 0) {
-                    threadMessage("Decreasing counter");
+                    threadMessage(i + ". Decreasing counter");
                     counter.decrease();
                 }
                 else {
-                    threadMessage("Increasing counter");
+                    threadMessage(i + ". Increasing counter");
                     counter.increase();
                 }
-                // Either yield() or sleep() necessary to make thread less greedy
+                // Either yield() or sleep() necessary to prevent thread from being greedy.
                 Thread.yield();
             }
             catch (InterruptedException e) {
