@@ -1,5 +1,6 @@
 package org.soabridge.reference.java5.concurrency;
 
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -76,6 +77,21 @@ public class Main {
             System.out.println("*** ExecutorService didn't finish after a " + patience + " " + patienceUnit + " wait ***");
             // Forcing shutdown of ExecutorService
             service4.shutdownNow();
+        }
+
+        System.out.println("-- Cyclical Barrier -------------------------------");
+        CyclicBarrier barrier = new CyclicBarrier(3);
+        ExecutorService service5 = Executors.newFixedThreadPool(3);
+        service5.execute(new WorkerCyclicBarrier(1000, barrier));
+        service5.execute(new WorkerCyclicBarrier(2000, barrier));
+        service5.execute(new WorkerCyclicBarrier(3000, barrier));
+        // Telling ExecutorService not to accept new tasks and shutdown after last task finishes
+        service5.shutdown();
+        // Wait for a maximum of 60s for ExecutorService to finish execution
+        if (!service5.awaitTermination(patience, patienceUnit)) {
+            System.out.println("*** ExecutorService didn't finish after a " + patience + " " + patienceUnit + " wait ***");
+            // Forcing shutdown of ExecutorService
+            service5.shutdownNow();
         }
     }
 
