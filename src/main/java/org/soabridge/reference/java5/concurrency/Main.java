@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.Phaser;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -79,12 +80,12 @@ public class Main {
             service4.shutdownNow();
         }
 
-        System.out.println("-- Cyclical Barrier -------------------------------");
+        System.out.println("-- Cyclic Barrier -------------------------------");
         CyclicBarrier barrier = new CyclicBarrier(3);
         ExecutorService service5 = Executors.newFixedThreadPool(3);
-        service5.execute(new WorkerCyclicBarrier(1000, barrier));
-        service5.execute(new WorkerCyclicBarrier(2000, barrier));
-        service5.execute(new WorkerCyclicBarrier(3000, barrier));
+        service5.execute(new WorkerCyclicBarrier("Cyclic1", 1000, barrier));
+        service5.execute(new WorkerCyclicBarrier("Cyclic2", 2000, barrier));
+        service5.execute(new WorkerCyclicBarrier("Cyclic3", 3000, barrier));
         // Telling ExecutorService not to accept new tasks and shutdown after last task finishes
         service5.shutdown();
         // Wait for a maximum of 60s for ExecutorService to finish execution
@@ -92,6 +93,21 @@ public class Main {
             System.out.println("*** ExecutorService didn't finish after a " + patience + " " + patienceUnit + " wait ***");
             // Forcing shutdown of ExecutorService
             service5.shutdownNow();
+        }
+
+        System.out.println("-- Phaser Barrier ---------------------------------");
+        Phaser phaser = new Phaser();
+        ExecutorService service6 = Executors.newFixedThreadPool(3);
+        service6.execute(new WorkerPhaser("Phaser1", 2000, phaser));
+        service6.execute(new WorkerPhaser("Phaser2", 500 , phaser));
+        service6.execute(new WorkerPhaser("Phaser3", 1500, phaser));
+        // Telling ExecutorService not to accept new tasks and shutdown after last task finishes
+        service6.shutdown();
+        // Wait for a maximum of 60s for ExecutorService to finish execution
+        if (!service6.awaitTermination(patience, patienceUnit)) {
+            System.out.println("*** ExecutorService didn't finish after a " + patience + " " + patienceUnit + " wait ***");
+            // Forcing shutdown of ExecutorService
+            service6.shutdownNow();
         }
     }
 

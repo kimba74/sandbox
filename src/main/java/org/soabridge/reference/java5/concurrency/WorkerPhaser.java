@@ -2,41 +2,38 @@ package org.soabridge.reference.java5.concurrency;
 
 import org.soabridge.reference.general.threads.LoggingRunnable;
 
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Phaser;
 
 /**
  * @author <a href="steffen.krause@soabridge.com">Steffen Krause</a>
  * @since 1.0
  */
-public class WorkerCyclicBarrier implements LoggingRunnable {
+public class WorkerPhaser implements LoggingRunnable {
 
     private long patience;
-    private CyclicBarrier barrier;
+    private Phaser phaser;
     private String name;
 
-    public WorkerCyclicBarrier(String name, long patience, CyclicBarrier barrier) {
+    public WorkerPhaser(String name, long patience, Phaser phaser) {
         this.name = name;
         this.patience = patience;
-        this.barrier = barrier;
+        this.phaser = phaser;
     }
 
     @Override
     public void run() {
+        phaser.register();
         try {
-            for(int i=1; i<=10; i++) {
+            for(int i=1; i<10; i++) {
                 threadMessage(i + ". \"" + name + "\" Cycle");
                 Thread.sleep(patience);
             }
             threadMessage("\"" + name + "\" Waiting for others to arrive");
-            barrier.await();
+            phaser.arriveAndAwaitAdvance();
             threadMessage("\"" + name + "\" Done!");
         }
         catch (InterruptedException e) {
             threadMessage("\"" + name + "\" Received Interrupt!");
-        }
-        catch (BrokenBarrierException e) {
-            threadMessage("\"" + name + "\" Barrier was broken!");
         }
     }
 }
