@@ -1,13 +1,9 @@
 package org.soabridge.reference.java5.concurrency;
 
-import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.Phaser;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * @author <a href="steffen.krause@soabridge.com">Steffen Krause</a>
@@ -59,21 +55,6 @@ public class Main {
             System.out.println("*** ExecutorService didn't finish after a " + patience + " " + patienceUnit + " wait ***");
             // Forcing shutdown of ExecutorService
             service3.shutdownNow();
-        }
-
-        System.out.println("-- Phaser Barrier ---------------------------------");
-        Phaser phaser = new Phaser();
-        ExecutorService service6 = Executors.newFixedThreadPool(3);
-        service6.execute(new WorkerPhaser("Phaser1", 2000, phaser));
-        service6.execute(new WorkerPhaser("Phaser2", 500 , phaser));
-        service6.execute(new WorkerPhaser("Phaser3", 1500, phaser));
-        // Telling ExecutorService not to accept new tasks and shutdown after last task finishes
-        service6.shutdown();
-        // Wait for a maximum of 60s for ExecutorService to finish execution
-        if (!service6.awaitTermination(patience, patienceUnit)) {
-            System.out.println("*** ExecutorService didn't finish after a " + patience + " " + patienceUnit + " wait ***");
-            // Forcing shutdown of ExecutorService
-            service6.shutdownNow();
         }
     }
 
