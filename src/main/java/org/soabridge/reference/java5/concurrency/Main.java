@@ -61,21 +61,6 @@ public class Main {
             service3.shutdownNow();
         }
 
-        System.out.println("-- Cyclic Barrier -------------------------------");
-        CyclicBarrier barrier = new CyclicBarrier(3);
-        ExecutorService service5 = Executors.newFixedThreadPool(3);
-        service5.execute(new WorkerCyclicBarrier("Cyclic1", 1000, barrier));
-        service5.execute(new WorkerCyclicBarrier("Cyclic2", 2000, barrier));
-        service5.execute(new WorkerCyclicBarrier("Cyclic3", 3000, barrier));
-        // Telling ExecutorService not to accept new tasks and shutdown after last task finishes
-        service5.shutdown();
-        // Wait for a maximum of 60s for ExecutorService to finish execution
-        if (!service5.awaitTermination(patience, patienceUnit)) {
-            System.out.println("*** ExecutorService didn't finish after a " + patience + " " + patienceUnit + " wait ***");
-            // Forcing shutdown of ExecutorService
-            service5.shutdownNow();
-        }
-
         System.out.println("-- Phaser Barrier ---------------------------------");
         Phaser phaser = new Phaser();
         ExecutorService service6 = Executors.newFixedThreadPool(3);
