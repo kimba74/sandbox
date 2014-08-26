@@ -18,13 +18,13 @@ public class ExampleCallable {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         System.out.println("-- Callable Example -------------------------------");
         ExecutorService service = Executors.newSingleThreadExecutor();
-        Future<Integer> future1 = service.submit(new Worker(new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}));
+        Future<Integer> future = service.submit(new Worker(new int[]{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20}));
         try {
-            System.out.printf("*** Summation result: %d ***%n", future1.get(patience, patienceUnit));
+            System.out.printf("*** Summation result: %d ***%n", future.get(patience, patienceUnit));
         }
         catch (TimeoutException e) {
             System.out.println("*** Summation did not finish withing " + patience + " " + patienceUnit + ", terminating ***");
-            future1.cancel(true);
+            future.cancel(true);
         }
         // Telling ExecutorService not to accept new tasks and shutdown after last task finishes
         service.shutdown();

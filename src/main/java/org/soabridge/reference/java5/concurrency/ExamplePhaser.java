@@ -18,17 +18,17 @@ public class ExamplePhaser {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("-- Phaser Barrier ---------------------------------");
         Phaser phaser = new Phaser();
-        ExecutorService service6 = Executors.newFixedThreadPool(3);
-        service6.execute(new Worker("Phaser1", 2000, phaser));
-        service6.execute(new Worker("Phaser2", 500 , phaser));
-        service6.execute(new Worker("Phaser3", 1500, phaser));
+        ExecutorService service = Executors.newFixedThreadPool(3);
+        service.execute(new Worker("Phaser1", 2000, phaser));
+        service.execute(new Worker("Phaser2", 500, phaser));
+        service.execute(new Worker("Phaser3", 1500, phaser));
         // Telling ExecutorService not to accept new tasks and shutdown after last task finishes
-        service6.shutdown();
+        service.shutdown();
         // Wait for a maximum of 60s for ExecutorService to finish execution
-        if (!service6.awaitTermination(patience, patienceUnit)) {
+        if (!service.awaitTermination(patience, patienceUnit)) {
             System.out.println("*** ExecutorService didn't finish after a " + patience + " " + patienceUnit + " wait ***");
             // Forcing shutdown of ExecutorService
-            service6.shutdownNow();
+            service.shutdownNow();
         }
     }
 

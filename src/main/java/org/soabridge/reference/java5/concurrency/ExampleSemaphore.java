@@ -10,16 +10,22 @@ import java.util.concurrent.TimeUnit;
  * @since 1.0
  */
 public class ExampleSemaphore {
+    static final long patience = 60;
+    static final TimeUnit patienceUnit = TimeUnit.SECONDS;
 
     public static void main(String[] args) throws InterruptedException {
+        System.out.println("-- Semaphore --------------------------------------");
         ExecutorService service = Executors.newFixedThreadPool(4);
         SharedResource resource = new SharedResource();
         service.execute(new Worker("Alpha", resource));
         service.execute(new Worker("Beta", resource));
         service.execute(new Worker("Gamma", resource));
+        // Telling ExecutorService not to accept new tasks and shutdown after last task finishes
         service.shutdown();
-        if (service.awaitTermination(60, TimeUnit.SECONDS)) {
-            System.out.println("*** Executor did not shut down after 60s, forcing shutdown ***");
+        // Wait for a maximum of 60s for ExecutorService to finish execution
+        if (!service.awaitTermination(patience, patienceUnit)) {
+            System.out.println("*** ExecutorService didn't finish after a " + patience + " " + patienceUnit + " wait ***");
+            // Forcing shutdown of ExecutorService
             service.shutdownNow();
         }
     }
@@ -48,7 +54,7 @@ public class ExampleSemaphore {
                 printMessage(message + "Entered method message()");
                 semaphore.acquire();
                 printMessage(message + "Acquired semaphore, now waiting my time");
-                Thread.sleep(2000);
+                Thread.sleep(1000);
                 printMessage(message + "Done waiting, releasing semaphore");
                 semaphore.release();
             }
