@@ -1,4 +1,4 @@
-package org.soabridge.reference.java5.concurrency;
+package org.soabridge.reference.java7.concurrency;
 
 import org.soabridge.reference.general.threads.LoggingRunnable;
 
