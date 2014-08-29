@@ -11,7 +11,7 @@ public class ExampleLocked {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("-- Intrinsic Lock ---------------------------------");
         // Create example shared object
-        SharedLocked locked = new SharedLocked();
+        SharedObject locked = new SharedObject();
         // Create example threads
         Thread thread1 = new Thread(new Worker(locked), "Locked1");
         Thread thread2 = new Thread(new Worker(locked), "Locked2");
@@ -23,10 +23,41 @@ public class ExampleLocked {
         thread2.join();
     }
 
-    static class Worker implements LoggingRunnable {
-        private SharedLocked locked;
+    static class SharedObject {
+        private int counter1 = 0;
+        private int counter2 = 0;
 
-        public Worker(SharedLocked locked) {
+        private final Object lock1 = new Object();
+        private final Object lock2 = new Object();
+
+        public void increase1() throws InterruptedException {
+            threadMessage("Thread trying to increase Counter1");
+            synchronized (lock1) {
+                counter1++;
+                threadMessage("Thread increased Counter2");
+                Thread.sleep(4000);
+            }
+        }
+
+        public void increase2() throws InterruptedException {
+            threadMessage("Thread trying to increase Counter2");
+            synchronized (lock2) {
+                counter2++;
+                threadMessage("Thread increased Counter2");
+                Thread.sleep(1000);
+            }
+        }
+
+        private void threadMessage(String message) {
+            String name = Thread.currentThread().getName();
+            System.out.printf("[%s]: %s%n", name, message);
+        }
+    }
+
+    static class Worker implements LoggingRunnable {
+        private SharedObject locked;
+
+        public Worker(SharedObject locked) {
             this.locked = locked;
         }
 

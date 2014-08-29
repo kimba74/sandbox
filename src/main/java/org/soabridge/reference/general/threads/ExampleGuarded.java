@@ -11,7 +11,7 @@ public class ExampleGuarded {
     public static void main(String[] args) throws InterruptedException {
         System.out.println("-- Guarded Block ----------------------------------");
         // Create example shared object
-        SharedGuarded drop = new SharedGuarded();
+        SharedObject drop = new SharedObject();
         // Create example threads
         Thread thread1 = new Thread(new Worker(Worker.Type.CONSUMER, drop), "Guarded1");
         Thread thread2 = new Thread(new Worker(Worker.Type.PRODUCER, drop), "Guarded2");
@@ -23,6 +23,42 @@ public class ExampleGuarded {
         thread2.join();
     }
 
+    static class SharedObject {
+        private boolean empty = true;
+        private String message;
+        private int deposit_cntr = 0;
+        private int pickup_cntr = 0;
+
+        public synchronized void deposit(String message) throws InterruptedException {
+            deposit_cntr++;
+            threadMessage(deposit_cntr + ". Thread entered deposit procedure [" + message + "]");
+            while (!empty) {
+                wait();
+            }
+            this.message = message;
+            this.empty = false;
+            notifyAll();
+            threadMessage(deposit_cntr + ". Thread commenced deposit procedure");
+        }
+
+        public synchronized String pickup() throws InterruptedException {
+            pickup_cntr++;
+            threadMessage(pickup_cntr + ". Thread entered pickup procedure");
+            while (empty) {
+                wait();
+            }
+            empty = true;
+            notifyAll();
+            threadMessage(pickup_cntr + ". Thread commenced pickup procedure [" + message + "]");
+            return message;
+        }
+
+        private void threadMessage(String message) {
+            String name = Thread.currentThread().getName();
+            System.out.printf("[%s]: %s%n", name, message);
+        }
+    }
+
     static class Worker implements LoggingRunnable {
         public static enum Type {
             CONSUMER,
@@ -30,9 +66,9 @@ public class ExampleGuarded {
         }
 
         private Type type;
-        private SharedGuarded drop;
+        private SharedObject drop;
 
-        public Worker(Type type, SharedGuarded drop) {
+        public Worker(Type type, SharedObject drop) {
             this.type = type;
             this.drop = drop;
         }
