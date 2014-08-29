@@ -3,6 +3,7 @@ package org.soabridge.reference.java7.concurrency;
 import java.util.Arrays;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author <a href="steffen.krause@soabridge.com">Steffen Krause</a>
@@ -15,23 +16,23 @@ public class ExampleForkJoin {
         // Create items list
         for (int i=0; i<40; i++)
             items[i] = i;
-        // Create Thread Pool
+        // Create Thread Pool with max. 10 parallel Threads
         ForkJoinPool pool = new ForkJoinPool(10);
-        // Execute Action
-        pool.invoke(new Worker(items));
+        // Execute Action and wait until it is finished
+        pool.invoke(new Task(items));
         System.out.println("*** All Done ***");
     }
 
-    static class Worker extends RecursiveAction {
+    static class Task extends RecursiveAction {
 
         private int[] items;
         private String name;
 
-        Worker(int[] items) {
+        Task(int[] items) {
             this(items, "Action-1");
         }
 
-        Worker(int[] items, String name) {
+        Task(int[] items, String name) {
             this.items = items;
             this.name = name;
         }
@@ -40,7 +41,7 @@ public class ExampleForkJoin {
             try {
                 for (int item : localitems) {
                     actionMessage(name + " - Item " + item);
-                    Thread.sleep(500);
+                    TimeUnit.MILLISECONDS.sleep(500);
                 }
             }
             catch (InterruptedException e) {
@@ -57,8 +58,8 @@ public class ExampleForkJoin {
             // Otherwise split in half and spin of actions
             else {
                 int half = items.length / 2;
-                invokeAll(new Worker(Arrays.copyOfRange(items, 0, half), name + ".1"),
-                        new Worker(Arrays.copyOfRange(items, half, items.length), name + ".2"));
+                invokeAll(new Task(Arrays.copyOfRange(items, 0, half), name + ".1"),
+                        new Task(Arrays.copyOfRange(items, half, items.length), name + ".2"));
             }
         }
 
