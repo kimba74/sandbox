@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 public class ExampleForkJoin {
 
     public static void main(String[] args) {
+        System.out.println("-- ForkJoin ---------------------------------------");
         int[] items = new int[40];
         // Create items list
         for (int i=0; i<40; i++)
