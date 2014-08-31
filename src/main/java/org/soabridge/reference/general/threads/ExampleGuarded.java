@@ -32,12 +32,12 @@ public class ExampleGuarded {
         public synchronized void deposit(String message) throws InterruptedException {
             deposit_cntr++;
             threadMessage(deposit_cntr + ". Thread entered deposit procedure [" + message + "]");
-            // This while() loop ensures that the Thread can really resume its work after being
+            // The while() loop ensures that the Thread can really resume its work after being
             // notified by another Thread. It checks the current state of the shared object and
             // verifies, that the state is a state it can work with.
             while (!empty) {
                 // When invoking wait() the invoking owner must be in possession of the current
-                // lock. The Thread will wait until another thread invoked the notify() of the
+                // lock. The Thread will wait until another thread invoked the notify() or the
                 // notifyAll() method. While waiting the current Thread releases its possession
                 // of the lock thus granting another Thread to enter a locked/synchronized method
                 // of the shared object. After being notified the current Thread will wait until it
@@ -55,12 +55,12 @@ public class ExampleGuarded {
         public synchronized String pickup() throws InterruptedException {
             pickup_cntr++;
             threadMessage(pickup_cntr + ". Thread entered pickup procedure");
-            // This while() loop ensures that the Thread can really resume its work after being
+            // The while() loop ensures that the Thread can really resume its work after being
             // notified by another Thread. It checks the current state of the shared object and
             // verifies, that the state is a state it can work with.
             while (empty) {
                 // When invoking wait() the invoking owner must be in possession of the current
-                // lock. The Thread will wait until another thread invoked the notify() of the
+                // lock. The Thread will wait until another thread invoked the notify() or the
                 // notifyAll() method. While waiting the current Thread releases its possession
                 // of the lock thus granting another Thread to enter a locked/synchronized method
                 // of the shared object. After being notified the current Thread will wait until it
