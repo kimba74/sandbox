@@ -14,8 +14,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ExampleLock {
 
-    static long patience = 60;
-    static TimeUnit patienceUnit = TimeUnit.SECONDS;
+    static final long patience = 60;
+    static final TimeUnit patienceUnit = TimeUnit.SECONDS;
 
     public static void main(String[] args) throws InterruptedException {
         ExecutorService service = Executors.newFixedThreadPool(2);
