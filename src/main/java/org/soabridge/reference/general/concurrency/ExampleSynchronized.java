@@ -1,4 +1,4 @@
-package org.soabridge.reference.general.threads;
+package org.soabridge.reference.general.concurrency;
 
 import java.util.Random;
 

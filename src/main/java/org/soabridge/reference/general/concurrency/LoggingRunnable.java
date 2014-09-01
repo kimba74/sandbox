@@ -1,4 +1,4 @@
-package org.soabridge.reference.general.threads;
+package org.soabridge.reference.general.concurrency;
 
 /**
  * @author <a href="steffen.krause@soabridge.com">Steffen Krause</a>

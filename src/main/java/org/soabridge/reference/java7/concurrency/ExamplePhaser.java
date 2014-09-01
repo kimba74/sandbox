@@ -1,6 +1,6 @@
 package org.soabridge.reference.java7.concurrency;
 
-import org.soabridge.reference.general.threads.LoggingRunnable;
+import org.soabridge.reference.general.concurrency.LoggingRunnable;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
