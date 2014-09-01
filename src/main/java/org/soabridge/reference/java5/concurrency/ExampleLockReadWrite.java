@@ -48,13 +48,21 @@ public class ExampleLockReadWrite {
         }
 
         public String readMessage() throws InterruptedException {
-            lock.readLock().lock();
+            boolean myLock = false;
             try {
-                TimeUnit.SECONDS.sleep(1);
-                return this.message;
+                myLock = lock.readLock().tryLock();
+                if (myLock) {
+                    TimeUnit.SECONDS.sleep(1);
+                    return this.message;
+                }
+                else {
+                    TimeUnit.SECONDS.sleep(1);
+                    return "Could not get lock";
+                }
             }
             finally {
-                lock.readLock().unlock();
+                if (myLock)
+                    lock.readLock().unlock();
             }
         }
     }
@@ -91,7 +99,7 @@ public class ExampleLockReadWrite {
         }
 
         private void read() throws InterruptedException {
-            for (int i=0; i<10; i++) {
+            for (int i=1; i<=10; i++) {
                 threadMessage(i + ". Read message: " + shared.readMessage());
                 TimeUnit.SECONDS.sleep(1);
             }
