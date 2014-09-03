@@ -34,6 +34,9 @@ public class ExampleLockReadWrite {
 
     static class SharedObject {
         private String message;
+        // The ReentrantReadWrite lock offers two sub-locks, one for read operations the other for write operations.
+        // The Read-only lock may be held by as many concurrent threads as available. It will not lock unless a
+        // Write-Lock is acquired by another thread.
         private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
         public void writeMessage(String message) throws InterruptedException {
@@ -48,9 +51,15 @@ public class ExampleLockReadWrite {
         }
 
         public String readMessage() throws InterruptedException {
+            // Define boolean to hold lock decision for later evaluation
             boolean myLock = false;
+            // Try to acquire lock. This method will not pause if the lock is not available but will return 'false'.
+            // In case the lock is available, the method will acquire it and then return 'true'
+            myLock = lock.readLock().tryLock();
+            // It is good practice to put the block following the acquisition of a lock in a try/finally block and
+            // put the returning of the lock into the 'final' clause, that way it can be assured that the lock will
+            // be returned even if the logic being guarded by a lock throws an exception.
             try {
-                myLock = lock.readLock().tryLock();
                 if (myLock) {
                     TimeUnit.SECONDS.sleep(1);
                     return this.message;
@@ -61,8 +70,9 @@ public class ExampleLockReadWrite {
                 }
             }
             finally {
-                if (myLock)
-                    lock.readLock().unlock();
+                // Check if the lock was successfully acquired before trying to return it. An exception will be
+                // thrown when trying to return a lock that is not owned by the current thread.
+                if (myLock) lock.readLock().unlock();
             }
         }
     }
