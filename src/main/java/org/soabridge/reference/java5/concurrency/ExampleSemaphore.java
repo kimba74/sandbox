@@ -47,15 +47,19 @@ public class ExampleSemaphore {
     }
 
     static class SharedResource {
+        // A Semaphore will allow the specified amount of concurrent threads to enter a protected block, any additional
+        // threads will halt until at least one Semaphore is returned.
         private Semaphore semaphore = new Semaphore(2, true);
 
         public void message(String message) {
             try {
                 printMessage(message + "Entered method message()");
+                // Acquiring a Semaphore, if one is available. If no Semaphore is left wait until one is returned
                 semaphore.acquire();
                 printMessage(message + "Acquired semaphore, now waiting my time");
                 Thread.sleep(1000);
                 printMessage(message + "Done waiting, releasing semaphore");
+                // Release Semaphore after completing the work thus allowing the next thread to enter the protected block
                 semaphore.release();
             }
             catch (InterruptedException e) {
