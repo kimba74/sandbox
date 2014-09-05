@@ -45,6 +45,9 @@ public class ExamplePhaser {
 
         @Override
         public void run() {
+            // A Phaser is similar to a CyclicLock with the difference that the amount of waiting threads doesn't have
+            // to be set during the construction of the Phaser, instead threads register themselves when they enter the
+            // protected block.
             phaser.register();
             try {
                 for (int i = 1; i < 10; i++) {
