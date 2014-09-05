@@ -25,16 +25,8 @@ public class ExampleForkJoinAsync {
         // Execute Action and continue with this thread
         pool.execute(task);
         System.out.println("*** Continuing with Main Thread ***");
-        // Manual waiting loop until Task is done
-        try {
-            while (!task.isDone()) {
-                TimeUnit.SECONDS.sleep(1);
-            }
-        }
-        catch (InterruptedException e) {
-            System.out.println("*** Main Thread was interrupted ***");
-        }
-        // Finish main Thread
+        // Join task. Wait until the task is finished before proceeding
+        task.join();
         System.out.println("*** All Done ***");
     }
 
