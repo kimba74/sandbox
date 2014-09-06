@@ -27,11 +27,20 @@ public class ExampleLocked {
         private int counter1 = 0;
         private int counter2 = 0;
 
+        // Locking Objects for protecting individual synchronized() blocks.
+        // The locking objects can be any type of object but in their simplest
+        // form can be just regular Object instances. These lock will be
+        // acquired by the first Thread reaching the synchronized block and will
+        // be returned after the block is being left by the Thread again. If a
+        // locking object has been already acquired by a Thread all subsequent
+        // Threads will halt until the locking object is being returned.
         private final Object lock1 = new Object();
         private final Object lock2 = new Object();
 
         public void increase1() throws InterruptedException {
             threadMessage("Thread trying to increase Counter1");
+            // Synchronized block protected by a locking object. The locking
+            // object will be released once the thread leaves the synchronized block.
             synchronized (lock1) {
                 counter1++;
                 threadMessage("Thread increased Counter2");
@@ -41,6 +50,8 @@ public class ExampleLocked {
 
         public void increase2() throws InterruptedException {
             threadMessage("Thread trying to increase Counter2");
+            // Synchronized block protected by a locking object. The locking
+            // object will be released once the thread leaves the synchronized block.
             synchronized (lock2) {
                 counter2++;
                 threadMessage("Thread increased Counter2");
