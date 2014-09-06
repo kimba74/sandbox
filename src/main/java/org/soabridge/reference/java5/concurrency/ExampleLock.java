@@ -46,20 +46,30 @@ public class ExampleLock {
         }
 
         private boolean impendingBow(Friend bower) {
+            // Lock acquisition stores for own and for other lock
             boolean myLock = false;
             boolean otherLock = false;
             try {
+                // Try to acquire own lock and save decision in acquisition store variable
                 myLock = lock.tryLock();
+                // Try to acquire other lock and save decision in acquisition store variable
                 otherLock = bower.lock.tryLock();
             }
             finally {
+                // If either only one or no lock at all could be acquired release
+                // lock that was acquired (if any)
                 if (!(myLock && otherLock)) {
+                    // Check if own lock was acquired and if so release it to let
+                    // another the other thread acquire it.
                     if (myLock)
                         lock.unlock();
+                    // Check if other lock was acquired and if so release it to let
+                    // another the other thread acquire it.
                     if (otherLock)
                         bower.lock.unlock();
                 }
             }
+            // Return status of acquired locks
             return myLock && otherLock;
         }
 
@@ -69,6 +79,8 @@ public class ExampleLock {
                     printMessage(bower.getName() + " has bowed to me.");
                     bower.bowBack(this);
                 }
+                // Always release locks within a 'finally' clause to ensure the locks are
+                // released otherwise an exception could render a shared object locked forever.
                 finally {
                     lock.unlock();
                     bower.lock.unlock();
