@@ -8,9 +8,13 @@ mechanism provided by Java to halt a thread allowing the other party to do their
 Thread when the own work is done. The example also demonstrates a state check of the Shared Object to ensure,
 that the notified Thread has a valid state to work with.
 
+[ExampleGuarded](Example Class)
+
 ## Interrupted Thread
 The purpose of this example is to demonstrate how to interrupt a Thread, how to handle an interrupt signal within
 the `Runnable`, and to experiment with the _interrupted status_ of the Thread Object itself.
+
+[ExampleInterrupted](Example Class)
 
 ## Intrinsic Locks
 
