@@ -21,7 +21,8 @@ _Intrinsic Locks_ are objects that protect sections in the code of Shared Object
 `synchronized()` blocks. This approach allows for a finer locking granularity than the _Synchronized Methods_
 by providing multiple, user-defined locks per Shared Object. As with _synchronized Methods_ _Intrinsic Locks_
 are so called _Reentrant Locks_ meaning that once a Thread has acquired and currently owns it, the Thread can
-"reacquire" it either directly or indirectly when encountering another _synchronized_ block.
+"reacquire" it either directly or indirectly when encountering another _synchronized_ block locked by the same
+_Intrinsic Lock_.
 
 [Example](ExampleLocked.java)
 
