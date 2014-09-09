@@ -22,7 +22,7 @@ to the `ForkJoinPool` via its constructor.
 [Example _Async_](ExampleForkJoinAsync.java)  
 
 ## Phaser Locks
-This kind of locks are very similar to the [Cyclic Locks](/src/main/java/org/soabridge/reference/java5/concurrency#cyclic-barrier)
+This kind of locks are very similar to the [Cyclic Locks](/src/main/java/org/soabridge/reference/java5/concurrency#cyclic-barriers)
 locks introduced in Java 5. The major difference however is that a `Phaser` lock does not require a fix amount of
 participating Threads but allows for the registration of new participants during runtime.
  
