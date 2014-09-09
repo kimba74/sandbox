@@ -6,7 +6,7 @@ To tackle large problems it sometimes becomes necessary to split work between mu
 introduced in Java 7 makes this task easier. This special Threadpool handles a type of `Runnable` that allows the
 developer to implement a splitting logic and let the Thread handle the forking and joining of sub-tasks automatically.
 The `ForkJoinTask` is this kind of `Runnable`. The `ForkJoinTask` is rarely used directly but instead offers multiple
-subclasses that are tailored for the most common needs.
+subclasses that are tailored for the most common needs.  
 `ForkJoinTask` implementations can be executed either via the `invoke()` method for synchronous or the `execute()`
 method for asynchronous processing. The `invoke()` method will wait until the Thread processing has stopped and all
 spun of sub-tasks completed. Unfortunately there is no time-out mechanism like with the e.g. `wait()` method, the
