@@ -30,6 +30,12 @@ one of its `get()` methods.
 [Example](ExampleCyclicBarrier.java)
 
 ## Enhanced Intrinsic Locks
+The new locking mechanism for intrinsic locks addressed a problem in which a Thread could not make its intention known
+to call a synchronized block in a shared object owned by another `Thread`, thus potentially leading leading to a
+dead-lock if the other Thread tried to access a shared object owned by the first Thread (bower/bowee example in Java
+tutorial. With the new `ReentrantLock` a Thread can pre-acquire lock and only execute if it possesses all involved locks
+or back off it not all locks could be acquired. 
+
 [Example](ExampleLock.java)
 
 ## Read-Write Locks
