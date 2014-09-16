@@ -39,6 +39,13 @@ or back off it not all locks could be acquired.
 [Example](ExampleLock.java)
 
 ## Read-Write Locks
+A special for of the new locks are the Read-Write locks. This lock consists out of two individual locks that are joined
+together in a higher level lock object. The two locks are a Read- and a Write lock. When synchronizing blocks the
+developer has the option to choose if the operation is read-only or if it has some write elements embedded in it. The
+Read lock can be acquired by as many Threads as the developer chooses as long as there is no Write-lock imposed. Only
+one Thread can own a Write-lock at a time. While owning a Write-lock no Read-lock can be acquired and therefore no read
+operation can be performed. A Write-lock can be downgraded to a Read-Lock to allow waiting Threads to proceed.
+
 [Example](ExampleLockReadWrite.java)
 
 ## Semaphore Locks
