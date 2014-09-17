@@ -49,4 +49,32 @@ operation can be performed. A Write-lock can be downgraded to a Read-Lock to all
 [Example](ExampleLockReadWrite.java)
 
 ## Semaphore Locks
+The Semaphore lock is a lock that can be initialized with a number. This number determines how many Threads can acquire
+the lock and proceed into the protected block at one time. Once the maximum number is reached all newly arriving
+Threads have to wait until one previous Thread exits the protected block.
+
+The `Semaphore` is initialized within the shared resource as follows:
+  
+```java
+    private Semaphore semaphore = new Semaphore(2, true);
+```
+  
+The first parameter is the number of concurrent Threads that can enter the protected block at one time, the
+second argument specifies whether the lock should handle following Threads _fair_. If set to `true` the waiting Threads
+will be served in the order in which they arrived, if set to `false` the next Thread trying to acquire the lock will 
+get it regardless of how many Threads are already waiting for a free Semaphore.
+  
+To protect code with this Semaphore lock no `synchronized()` is required. Instead the following way is suggested:
+  
+```java
+   semaphore.acquire();
+   // This is where the protected code goes
+   semaphore.release();
+```
+  
+It is probably a good practice to place the `semaphore.acquire()` statement into the `try{}` block and the 
+`semaphore.release()` statement into the `finally{}` block of the same try-catch block. This will prevent a Thread from 
+never returning the Semaphore in case an `Exception` was thrown in the protected code block.  
+_(TODO: Test last statement)_   
+
 [Example](ExampleSemaphore.java)
