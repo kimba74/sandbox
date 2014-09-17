@@ -72,8 +72,8 @@ To protect code with this Semaphore lock no `synchronized()` is required. Instea
    semaphore.release();
 ```
   
-It is probably a good practice to place the `semaphore.acquire()` statement into the `try{}` block and the 
-`semaphore.release()` statement into the `finally{}` block of the same try-catch block. This will prevent a Thread from 
+It is probably a good practice to place the `semaphore.acquire()` statement into the `try{}` and the 
+`semaphore.release()` statement into the `finally{}` clause of the same try-catch block. This will prevent a Thread from 
 never returning the Semaphore in case an `Exception` was thrown in the protected code block.  
 _(TODO: Test last statement)_   
 
