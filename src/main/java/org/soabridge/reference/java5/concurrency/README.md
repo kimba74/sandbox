@@ -39,12 +39,60 @@ or back off it not all locks could be acquired.
 [Example](ExampleLock.java)
 
 ## Read-Write Locks
-A special for of the new locks are the Read-Write locks. This lock consists out of two individual locks that are joined
+A special form of the new locks are the Read-Write locks. This lock consists out of two individual locks that are joined
 together in a higher level lock object. The two locks are a Read- and a Write lock. When synchronizing blocks the
 developer has the option to choose if the operation is read-only or if it has some write elements embedded in it. The
 Read lock can be acquired by as many Threads as the developer chooses as long as there is no Write-lock imposed. Only
 one Thread can own a Write-lock at a time. While owning a Write-lock no Read-lock can be acquired and therefore no read
 operation can be performed. A Write-lock can be downgraded to a Read-Lock to allow waiting Threads to proceed.
+
+A simple Read-Write Lock is instantiated in the shared resource with the following line:  
+  
+```java
+    private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+```  
+  
+To protect the code with this Read-Write lock no `synchronized()` block is necessary. Instead the following mechanism
+is recommended:
+
+For protecting code with a _Write_ lock:  
+```java
+    lock.writeLock().lock();
+    try {
+        // Protected code goes here
+    }
+    finally {
+        lock.writeLock().unlock();
+    }
+```
+  
+For protecting code with a _Read_ lock:  
+```java
+    boolean myLock = lock.readLock().tryLock();
+    try {
+        if (myLock) {
+            // Protected code goes here
+        }
+        else {
+            // Code to be executed if a lock could
+            // not be acquired goes here
+        }
+    }
+    finally {
+        if (myLock) lock.readLock().unlock();
+    }
+```  
+  
+It is important to notice that other than the `lock()` method the `tryLock()` method will not halt if a lock could not
+be acquired. Instead this method will return a boolean value indicating if the lock was successfully acquired or not.
+This method is preferable if other code than the protected block should be executed. When using the `tryLock()` method
+it is important to test if the lock acquisition was successful before releasing the lock with the `unlock()` method.
+An exception is thrown when a Thread tries to return a lock it doesn't have.  
+  
+Both snippets, the one demonstrating the _Read_ and the other the _Write_ lock wrap the code execution in a try-finally 
+block to ensure the lock is being released even if the protected code throws an exception. Otherwise, should a Thread
+prematurely leave the method due to an exception the `unlock()` method won't be executed and the lock never be released
+thus preventing all waiting Threads from ever being able to execute the protected code.
 
 [Example](ExampleLockReadWrite.java)
 
