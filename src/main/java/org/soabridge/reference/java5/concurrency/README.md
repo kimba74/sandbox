@@ -23,6 +23,43 @@ its `submit()` method (vs. calling its `execute()` method). The `submit()` metho
 is type-cast to the exact same object the submitted `Callable` implementation is. Once the `Callable` terminates by
 successfully exiting its `call()` method, the return valuable can be retrieved from the `Future<>` object by invoking
 one of its `get()` methods.
+  
+Example of a `Callable` implementation:  
+```java
+    public class FactorialWorker implements Callable<Integer> {
+        private int maximum;
+
+        public FactorialWorker(int maximum) {
+            this.maximum = maximum;
+        }
+        
+        public Integer call() {
+            int factorial = 0;
+            for(int i=0; i<= maximum; i++) {
+                factorial = factorial * i;
+            }
+            return factorial;
+        }
+    }
+```  
+  
+To execute a `Callable` and retrieve its returned value it needs to be handed to the `ExecutorService` via the
+`submit()` rather than the `execute()` method. The `submit()` method will return a `Future` object which can be used to
+control the `Callable` runtime behavior and retrieve the returned value once it finishes.
+  
+Example of submitting a `Callable` for execution and the retrieval of the return value:  
+```java
+    ExecutorService service = Executors.newSingleThreadExecutor();
+    Future<Integer> future = service.submit(new FactorialWorker(50));
+    Integer result = null;
+    try {
+        // Use the 'future' object to retrieve the return value
+        result = future.get(60, TimeUnit.SECONDS);
+    }
+    catch (TimeoutException e) {
+        future.cancel(true);
+    }
+```
 
 [Example](ExampleCallable.java)
 
