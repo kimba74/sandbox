@@ -53,7 +53,6 @@ Example of submitting a `Callable` for execution and the retrieval of the return
     Future<Integer> future = service.submit(new FactorialWorker(50));
     Integer result = null;
     try {
-        // Use the 'future' object to retrieve the return value
         result = future.get(60, TimeUnit.SECONDS);
     }
     catch (TimeoutException e) {
