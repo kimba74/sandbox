@@ -72,6 +72,24 @@ dead-lock if the other Thread tried to access a shared object owned by the first
 tutorial. With the new `ReentrantLock` a Thread can pre-acquire lock and only execute if it possesses all involved locks
 or back off it not all locks could be acquired. 
 
+The new `ReentrantLock` is easily instantiated in the shared object with the following line:  
+```java
+    private ReentrantLock lock = new ReentrantLock();
+```  
+  
+The following example demonstrates how to protect a block of code with the lock object:  
+```java
+    boolean myLock = false;
+    try {
+        myLock = lock.tryLock();
+    }
+    finally {
+        if (myLock)
+            lock.unlock();
+        }
+    }
+```
+
 [Example](ExampleLock.java)
 
 ## Read-Write Locks
