@@ -58,8 +58,9 @@ Example of submitting a `Callable` for execution and the retrieval of the return
     catch (TimeoutException e) {
         future.cancel(true);
     }
-```
-
+```  
+The `get()` method of the `Future` object can take either no arguments at all or a timeout combination consisting of the the amount and the time unit type. Should the set timeout expire before a result was received this method will throw a `TimeoutException` indicating that it took longer than expected to receive the return value. The method without any parameters will wait until the return value was received.
+  
 [Example](ExampleCallable.java)
 
 ## Cyclic Barriers
