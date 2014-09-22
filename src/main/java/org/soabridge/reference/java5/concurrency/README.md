@@ -59,11 +59,35 @@ Example of submitting a `Callable` for execution and the retrieval of the return
         future.cancel(true);
     }
 ```  
-The `get()` method of the `Future` object can take either no arguments at all or a timeout combination consisting of the the amount and the time unit type. Should the set timeout expire before a result was received this method will throw a `TimeoutException` indicating that it took longer than expected to receive the return value. The method without any parameters will wait until the return value was received.
+The `get()` method of the `Future` object can take either no arguments at all or a timeout combination consisting of 
+the amount and the time unit type. Should the set timeout expire before a result was received this method will throw
+a `TimeoutException` indicating that it took longer than expected to receive the return value. The method without any
+parameters will wait until the return value was received.
   
 [Example](ExampleCallable.java)
 
 ## Cyclic Barriers
+A `CyclicBarrier` is a new structure that allows to synchronize an amount of threads like the `join()` method does
+with two. The idea is that a thread that reaches a common `CyclicBarrier` waits until the rest of the expected threads
+have reached the `CyclicBarrier` as well. This structure takes a fix amount of threads and holds all waiting threads 
+until exactly the amount of configured threads has reached the barrier.
+  
+A `CyclicBarrier` is instantiated very simple like this:
+```java
+   CyclicBarrier barrier = new CyclicBarrier(3);
+```
+The integer parameter in the constructor is the amount of threads that are expected to reach the barrier before each one
+ca proceed.
+  
+To make a thread wait until the other threads have arrived simply invoke it like that:
+```java
+   barrier.await();
+```  
+The `await()` method comes in two versions, first the simple `await()` signature without any parameters. This version
+will halt the waiting thread until all other threads have arrived no matter how long it takes. The second version
+`await(long, TimeUnit)` let's the developer specify a time-out to prevent the thread to wait forever. This version
+will throw a `TimeoutException` when the maximum time has been reached before the other threads have arrived.
+
 [Example](ExampleCyclicBarrier.java)
 
 ## Enhanced Intrinsic Locks
