@@ -1,10 +1,10 @@
 Java5 Concurrency Examples
 ==========================
 
-## Executors and Threadpools
+## Executors and Thread Pools
 Before Java5 running Threads involved either the implementation of a `Runnable`, which was then passed to the instance
 of a `Thread` object or the extension of the `Thread` class itself. The runtime had to be managed manually by storing
-the `Thread` object in a central location and monitoring it's life-cycle. Threadpools had to be manually designed
+the `Thread` object in a central location and monitoring it's life-cycle. Thread Pools had to be manually designed
 and implemented. `Executor` and its sub- and supporting classes take a load of work off the developer's hands. Instead
 of passing a `Runnable` implementation to a `Thread` object amd managing it manually one can now just pass it to
 the instance of a `ExecutorService`.  
