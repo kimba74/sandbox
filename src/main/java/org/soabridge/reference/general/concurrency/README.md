@@ -34,4 +34,10 @@ specified by the developer protected methods have to be marked with the `synchro
 Thread of the lock will return it the moment it leaves the synchronized method thus permitting access to all
 other synchronized to the Thread next in line.
 
+```java
+public synchronized void decrease() throws InterruptedException {
+   ...
+   Thread.sleep(wait);
+}
+```  
 [Example](ExampleSynchronized.java)
