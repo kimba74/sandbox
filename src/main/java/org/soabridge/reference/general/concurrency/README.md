@@ -23,7 +23,18 @@ by providing multiple, user-defined locks per Shared Object. As with _synchroniz
 are so called _Reentrant Locks_ meaning that once a Thread has acquired and currently owns it, the Thread can
 "reacquire" it either directly or indirectly when encountering another _synchronized_ block locked by the same
 _Intrinsic Lock_.
-
+  
+```java
+    private final Object lock = new Object();
+```
+  
+```java
+public void increase2() throws InterruptedException {
+    synchronized (lock) {
+        ...
+    }
+}
+```
 [Example](ExampleLocked.java)
 
 ## Synchronized Methods
