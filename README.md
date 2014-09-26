@@ -13,7 +13,7 @@ Standard Java concurrency functionality:
 New `java.util.concurrency` package functionality (e.g. Locks, Executors, Callables)  
 [Examples _Java5_](src/main/java/org/soabridge/reference/java5/concurrency)  
   
-Additional functionality added to `java.util.concurrency` package functionality (e.g. ForkJoin and Phaser)
+Additions to `java.util.concurrency` package functionality (e.g. ForkJoin and Phaser)
 [Examples _Java7_](src/main/java/org/soabridge/reference/java7/concurrency)  
 
 ## Lambda Expressions _(Java8)_
