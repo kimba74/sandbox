@@ -35,12 +35,13 @@ public class StatusWorker {
     public static class Worker implements Runnable {
 
         public enum Status {
-            RUNNABLE,
-            RUNNING,
-            TERMINATING,
-            SHUTDOWN
+            RUNNABLE,    // Status after the Worker was created
+            RUNNING,     // Status when the Worker has started executing
+            TERMINATING, // Status after the Worker has been scheduled to terminate
+            SHUTDOWN     // Status after the Worker actually finished
         }
 
+        // The initial status of all workers is RUNNABLE
         private Status status = Status.RUNNABLE;
         private String message = "<NO MESSAGE>";
 
@@ -54,6 +55,7 @@ public class StatusWorker {
         }
 
         public void terminate() {
+            // Worker can only be terminated if it is running
             if (status == Status.RUNNING) {
                 status = Status.TERMINATING;
                 System.out.println("INFO> Worker was scheduled for termination!");
@@ -62,7 +64,9 @@ public class StatusWorker {
 
         @Override
         public void run() {
-            status = Status.RUNNING;
+            // Worker can only be run if it is runnable
+            if (status == Status.RUNNABLE)
+                status = Status.RUNNING;
             try {
                 while (status == Status.RUNNING) {
                     System.out.printf("MESSAGE> %s%n", message);
@@ -73,6 +77,7 @@ public class StatusWorker {
                 System.out.println("INFO> Worker Thread was interrupted");
             }
             finally {
+                // Worker will be set to SHUTDOWN right before it exits the run() method
                 status = Status.SHUTDOWN;
                 System.out.println("INFO> Worker shut down!");
             }
