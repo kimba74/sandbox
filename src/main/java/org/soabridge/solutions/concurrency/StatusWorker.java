@@ -11,10 +11,10 @@ import java.util.concurrent.TimeUnit;
 public class StatusWorker {
 
     public static void main(String[] args) throws InterruptedException {
-        ExecutorService threadpool = Executors.newSingleThreadExecutor();
+        ExecutorService pool = Executors.newSingleThreadExecutor();
         Worker worker = new Worker();
 
-        threadpool.execute(worker);
+        pool.execute(worker);
         TimeUnit.MILLISECONDS.sleep(1500);
 
         worker.setMessage("Message 1");
@@ -28,7 +28,7 @@ public class StatusWorker {
 
         worker.terminate();
 
-        threadpool.shutdown();
+        pool.shutdown();
     }
 
 
